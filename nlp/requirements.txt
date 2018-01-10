@@ -1,0 +1,12 @@
+Cython==0.27.3
+httplib2==0.10.3
+isodate==0.6.0
+lxml==4.1.1
+nltk==3.2.5
+nltk-frog==1.0.1
+numpy==1.14.0
+PyNLPl==1.2.5
+pyparsing==2.2.0
+python-frog==0.3.4
+rdflib==4.2.2
+six==1.11.0
