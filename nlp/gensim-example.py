@@ -66,7 +66,7 @@ def dump_documents(corpus_lsi):
     documents = []
     for document in corpus_lsi:
         confidence = [score[1] for score in document]
-        d={"name":"economy/10-12-1994", "confidence":str(confidence)}
+        d={"name":"economy/10-12-1994", "confidence":confidence}
         documents.append(d)
 
     import json
