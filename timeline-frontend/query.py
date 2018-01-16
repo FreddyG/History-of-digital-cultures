@@ -1,4 +1,6 @@
+import json
 import requests
+import wikipedia
 
 query = '''SELECT ?event ?eventLabel ?date
 WHERE
@@ -10,6 +12,7 @@ WHERE
 	OPTIONAL { ?event wdt:P580 ?date. }
 	# not in the future, and not more than 31 days ago
 	BIND(NOW() - ?date AS ?distance).
+    #7700 dagen gelden tot 7750 dagen geleden
 	FILTER(7700 <= ?distance && ?distance < 7750).
     #FILTER(lang(?label) = 'nl').
 }
@@ -18,4 +21,10 @@ LIMIT 10'''
 
 url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
 data = requests.get(url, params={'query': query, 'format': 'json'}).json()
-print(data);
+newUrl = 'https://www.wikidata.org/w/api.php?action=wbgetentities&format=xml&props=sitelinks&ids='
+wikiUrl = 'https://en.wikipedia.org/wiki/'
+for i in data["results"]["bindings"]:
+    id = i["event"]["value"].rsplit('/', 1)[-1]
+    title = requests.get(newUrl+id, params={'format': 'json'}).json()["entities"][id]["sitelinks"]["enwiki"]["title"]
+    page = wikipedia.page(title);
+    print(page.summary)
