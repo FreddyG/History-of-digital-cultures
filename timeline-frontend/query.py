@@ -19,12 +19,12 @@ WHERE
 
 LIMIT 10'''
 
-url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
-data = requests.get(url, params={'query': query, 'format': 'json'}).json()
-newUrl = 'https://www.wikidata.org/w/api.php?action=wbgetentities&format=xml&props=sitelinks&ids='
-wikiUrl = 'https://en.wikipedia.org/wiki/'
+wikidataSparqlUrl = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
+data = requests.get(wikidataSparqlUrl, params={'query': query, 'format': 'json'}).json()
+wikiDataEntityUrl = 'https://www.wikidata.org/w/api.php?action=wbgetentities&format=xml&props=sitelinks&ids='
+
 for i in data["results"]["bindings"]:
     id = i["event"]["value"].rsplit('/', 1)[-1]
-    title = requests.get(newUrl+id, params={'format': 'json'}).json()["entities"][id]["sitelinks"]["enwiki"]["title"]
+    title = requests.get(wikiDataEntityUrl+id, params={'format': 'json'}).json()["entities"][id]["sitelinks"]["enwiki"]["title"]
     page = wikipedia.page(title);
     print(page.summary)
