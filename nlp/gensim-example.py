@@ -48,6 +48,32 @@ def tokenize(text):
 	return filtered_tokens
 
 
+def dump_keywords(topics):
+    topic_keywords = []
+    for topic in topics:
+        topic_keywords1 = []
+        for keyword in topic[1]:
+            d={"keyword":keyword[0], "weight":keyword[1]}
+            topic_keywords1.append(d)
+        topic_keywords.append(topic_keywords1)
+
+    import json
+    with open('keywords.json', 'w') as f:
+        json.dump(topic_keywords, f, ensure_ascii=False)
+
+
+def dump_documents(corpus_lsi):
+    documents = []
+    for document in corpus_lsi:
+        confidence = [score[1] for score in document]
+        d={"name":"economy/10-12-1994", "confidence":str(confidence)}
+        documents.append(d)
+
+    import json
+    with open('clusters.json', 'w') as f:
+        json.dump(documents, f, ensure_ascii=False)
+
+
 if __name__ == "__main__":
     texts = [tokenize(document) for document in documents]
     dictionary = corpora.Dictionary(texts)
@@ -60,9 +86,12 @@ if __name__ == "__main__":
     lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=3)
     # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
     corpus_lsi = lsi[corpus_tfidf] 
-
-    print(lsi.print_topics(3))
+    topics = lsi.show_topics(formatted=False)
+    print(topics)
 
     # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
     for doc in corpus_lsi: 
         print(doc)
+
+    dump_keywords(topics)
+    dump_documents(corpus_lsi)
