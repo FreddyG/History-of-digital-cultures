@@ -6,6 +6,11 @@ import codecs
 from sklearn import feature_extraction
 from gensim import corpora, models, similarities
 
+
+NLTK_DATA_PATH = '../venv/nltk_data'
+RESOURCES = ['corpora/stopwords',
+             'tokenizers/punkt']
+
 documents = ["Het Openbaar Ministerie onderzoekt mogelijke fraude door de ex-directeur van vermogensbeheerder Box Consultants. Dat bevestigen het OM en het bedrijf zelf na berichtgeving van het Financieele Dagblad. Onder de klanten van Box zitten volgens het FD ook leden van het Koninklijk Huis. Het OM verdenkt de ex-directeur ervan dat hij jarenlang provisies, die hij ontving van beleggingsfondsen, niet aan klanten doorbetaalde. Hij wordt ook verdacht van valsheid in geschrifte om dit te verhullen. Volgens het FD gaat het om 8 miljoen euro, die Box en de ex-directeur in eigen zak hebben gestoken.",
 			 "Sociaal was hij misschien niet de meest handige voorzitter van de Eurogroep. Soms bot, het hart vaak op de tong met stoere opmerkingen over vrouwen, drank en roken als een schoorsteen. Opmerkingen die niet altijd goed begrepen werden. Hij werd gehaat in Zuid-Europa, maar was de held van de Duitsers. De ultieme bewaker van de euro. Vandaag komt dan toch echt een einde aan Jeroen Dijsselbloem als aanvoerder van de Eurogroep. Een kleine bloemlezing van kwesties die hem (en Europa) vijf jaar lang bezighielden.",
 			 "Huiseigenaren die na 14 juli 2016 te veel boeterente betaalden bij hun hypotheek, hebben een financiële meevaller. Ze hebben bij het oversluiten of vervroegd aflossen van de hypotheek te veel boeterente betaald en krijgen geld terug van de banken. Het gaat om circa 35.000 klanten en om gemiddeld 800 euro per hypotheek. Hypotheekmarktleider Rabobank heeft op last van de Autoriteit Financiële Markten (AFM) 52.000 hypotheekleningen opnieuw bekeken en 20.000 klanten blijken te veel betaald te hebben. ABN Amro compenseert 9000 klanten en bij ING gaat het om een paar duizend klanten. De tik op de vingers van de AFM kost de banken naar schatting tussen de 25 en 30 miljoen euro.",
@@ -16,13 +21,23 @@ documents = ["Het Openbaar Ministerie onderzoekt mogelijke fraude door de ex-dir
 			 "Het kabinet moet onderzoeken of onveilige internet of things-apparaten geweerd kunnen worden van de markt. Daarvoor pleit de Cyber Security Raad, een adviesorgaan van het kabinet. In die raad zitten mensen uit het bedrijfsleven, de wetenschap en de overheid.",
 			 "Doordat de lekken in de hardware van de computer zitten - en dus niet in de software, zoals vaker gebeurt - is het lastig oplossen. De enige échte oplossing is het maken en inbouwen van nieuwe chips. Op een gegeven moment zullen nieuwe apparaten dus veilig zijn voor dit probleem, maar dat duurt nog wel even. Vrijwel alle apparaten die nu nog in de winkel liggen zijn kwetsbaar voor een of beide lekken."]
 
-#nltk.download('punkt')
-#nltk.download('stopwords')
+
+             
+def check_nltk_resources(path):
+    for res in RESOURCES:
+        try:
+            nltk.data.find(res)
+        except LookupError:
+            nltk.download(res.split('/')[1], path)
+
+check_nltk_resources(NLTK_DATA_PATH)
 stopwords = nltk.corpus.stopwords.words('dutch')
 
 def tokenize(text):
-	# first tokenize by sentence, then by word to ensure that punctuation is caught as it's own token
-	tokens = [word.lower() for sent in nltk.sent_tokenize(text) for word in nltk.word_tokenize(sent)]
+	# first tokenize by sentence, then by word to ensure that punctuation
+        # is caught as it's own token
+	tokens = [word.lower() for sent in nltk.sent_tokenize(text)
+                               for word in nltk.word_tokenize(sent)]
 	filtered_tokens = []
 	# filter out any tokens not containing letters (e.g., numeric tokens, raw punctuation)
 	for token in tokens:
@@ -32,17 +47,22 @@ def tokenize(text):
 			filtered_tokens.append(token)
 	return filtered_tokens
 
-texts = [tokenize(document) for document in documents]
-dictionary = corpora.Dictionary(texts)
-corpus = [dictionary.doc2bow(text) for text in texts]
 
-tfidf = models.TfidfModel(corpus)	# train model
-corpus_tfidf = tfidf[corpus]		# transform documents
+if __name__ == "__main__":
+    texts = [tokenize(document) for document in documents]
+    dictionary = corpora.Dictionary(texts)
+    corpus = [dictionary.doc2bow(text) for text in texts]
 
-lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=3) # initialize an LSI transformation
-corpus_lsi = lsi[corpus_tfidf] # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
+    tfidf = models.TfidfModel(corpus)	# train model
+    corpus_tfidf = tfidf[corpus]        # transform documents
 
-print(lsi.print_topics(3))
+    # initialize an LSI transformation
+    lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=3)
+    # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
+    corpus_lsi = lsi[corpus_tfidf] 
 
-for doc in corpus_lsi: # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
-    print(doc)
+    print(lsi.print_topics(3))
+
+    # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
+    for doc in corpus_lsi: 
+        print(doc)
