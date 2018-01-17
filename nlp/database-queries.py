@@ -25,6 +25,11 @@ def __main__():
     for messages in cafe_with_timestamp_cursor:
         print(messages[0])
 
+    # Get first and last message from designated cafe (asc or desc)
+    cafe_first_last_messages_cursor = query_cafe_first_last_messages("`13`", "asc", cursor)
+    for messages in cafe_first_last_messages_cursor:
+        print(messages[0] + ", timestamp: " + str(messages[1]))
+
     cursor.close()
     cnx.close()
 
@@ -49,6 +54,14 @@ def query_cafe(cafe, cursor):
 def query_cafe_with_timestamp(cafe, timestampbegin, timestampend, cursor):
     query = ("SELECT message FROM " + cafe + " WHERE timestamp BETWEEN %s AND %s")
     cursor.execute(query, (timestampbegin, timestampend))
+
+    return cursor
+
+
+# Returns first or last message from cafe
+def query_cafe_first_last_messages(cafe, mode, cursor):
+    query = ("SELECT message, timestamp FROM " + cafe + " ORDER BY timestamp " + mode + " limit 1")
+    cursor.execute(query)
 
     return cursor
 
