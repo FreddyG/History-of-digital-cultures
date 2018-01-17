@@ -30,8 +30,12 @@ def check_nltk_resources(path):
         except LookupError:
             nltk.download(res.split('/')[1], path)
 
+def get_stopwords():
+    lines = [line.rstrip('\n') for line in open('our_stopwords.txt')]
+    return nltk.corpus.stopwords.words('dutch') + lines
+
 check_nltk_resources(NLTK_DATA_PATH)
-stopwords = nltk.corpus.stopwords.words('dutch')
+stopwords = get_stopwords()
 
 def tokenize(text):
 	# first tokenize by sentence, then by word to ensure that punctuation
