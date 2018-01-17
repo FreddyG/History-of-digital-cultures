@@ -5,6 +5,8 @@ import os
 import codecs
 from sklearn import feature_extraction
 from gensim import corpora, models, similarities
+from os import listdir
+from os.path import isfile, join
 
 
 NLTK_DATA_PATH = '../venv/nltk_data'
@@ -22,7 +24,20 @@ documents = ["Het Openbaar Ministerie onderzoekt mogelijke fraude door de ex-dir
              "Doordat de lekken in de hardware van de computer zitten - en dus niet in de software, zoals vaker gebeurt - is het lastig oplossen. De enige échte oplossing is het maken en inbouwen van nieuwe chips. Op een gegeven moment zullen nieuwe apparaten dus veilig zijn voor dit probleem, maar dat duurt nog wel even. Vrijwel alle apparaten die nu nog in de winkel liggen zijn kwetsbaar voor een of beide lekken."]
 
 
-             
+def read_files():
+    res = []
+    directory = 'data'
+    onlyfiles = [f for f in listdir(directory) if isfile(join(directory, f))]
+    for file in onlyfiles:
+        f = open(directory+'/'+file, "r")
+        name = file.split('.')[0]
+        cafename = name.split('-')[0]
+        date = name.split('-')[1] + '-' + name.split('-')[2]
+        res.append( (cafename, date, f.read().replace('\n', ' ')) )
+        f.close()
+    return res
+
+
 def check_nltk_resources(path):
     for res in RESOURCES:
         try:
@@ -66,12 +81,14 @@ def dump_keywords(topics):
         json.dump(topic_keywords, f, ensure_ascii=False)
 
 
-def dump_documents(corpus_lsi):
+def dump_documents(corpus_lsi, files):
     documents = []
+    index = 0
     for document in corpus_lsi:
         confidence = [score[1] for score in document]
-        d={"name":"economy/10-12-1994", "confidence":confidence}
+        d={"name":files[index][0]+"/"+files[index][1], "confidence":confidence}
         documents.append(d)
+        index += 1
 
     import json
     with open('clusters.json', 'w') as f:
@@ -79,7 +96,8 @@ def dump_documents(corpus_lsi):
 
 
 if __name__ == "__main__":
-    texts = [tokenize(document) for document in documents]
+    files = read_files()
+    texts = [tokenize(document[2]) for document in files]
     dictionary = corpora.Dictionary(texts)
     corpus = [dictionary.doc2bow(text) for text in texts]
 
@@ -87,7 +105,7 @@ if __name__ == "__main__":
     corpus_tfidf = tfidf[corpus]        # transform documents
 
     # initialize an LSI transformation
-    lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=3)
+    lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=100)
     # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
     corpus_lsi = lsi[corpus_tfidf] 
     topics = lsi.show_topics(formatted=False)
@@ -98,4 +116,4 @@ if __name__ == "__main__":
         print(doc)
 
     dump_keywords(topics)
-    dump_documents(corpus_lsi)
+    dump_documents(corpus_lsi, files)
