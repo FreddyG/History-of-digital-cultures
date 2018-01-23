@@ -1,4 +1,4 @@
->>> onderwijs
+>>> onderwijs 0.025658113962012664
 ('hallo', 21)
 ('dag', 18)
 ('doei', 16)
@@ -9,7 +9,7 @@
 ('tot zo', 2)
 ('iemand hier', 2)
 ('goedenavond', 2)
->>> winkel
+>>> winkel 0.1165644171779141
 ('hallo', 17)
 ('hi', 5)
 ('hoi', 5)
@@ -19,7 +19,7 @@
 ('tot zo', 2)
 ('de mazzel', 1)
 ('goedemiddag', 1)
->>> gezondheid
+>>> gezondheid 0.11464968152866242
 ('hallo', 19)
 ('hoi', 5)
 ('dag', 4)
@@ -27,7 +27,7 @@
 ('doei', 3)
 ('hey', 1)
 ('is er iemand', 1)
->>> nieuws
+>>> nieuws 0.04477611940298507
 ('hallo', 17)
 ('dag', 10)
 ('hoi', 9)
@@ -39,7 +39,7 @@
 ('hai', 1)
 ('goedenmiddag', 1)
 ('goedenavond', 1)
->>> template
+>>> template 0.1012292118582791
 ('hallo', 71)
 ('hoi', 17)
 ('dag', 11)
@@ -55,7 +55,7 @@
 ('goedenmiddag', 1)
 ('goedemiddag', 1)
 ('goedemorgen', 1)
->>> IBM
+>>> IBM 0.1277445109780439
 ('hallo', 29)
 ('dag', 10)
 ('hoi', 7)
@@ -67,7 +67,7 @@
 ('tot zo', 1)
 ('goedemiddag', 1)
 ('is er iemand', 1)
->>> televisie
+>>> televisie 0.06011608623548922
 ('hallo', 68)
 ('hoi', 19)
 ('dag', 18)
@@ -84,7 +84,7 @@
 ('goedenavond', 1)
 ('goedemiddag', 1)
 ('goedemorgen', 1)
->>> cultuur
+>>> cultuur 0.03325208913649025
 ('hallo', 101)
 ('dag', 83)
 ('hoi', 48)
@@ -103,7 +103,7 @@
 ('goede middag', 2)
 ('yo', 1)
 ('goedemiddag', 1)
->>> homo
+>>> homo 0.04027411199796483
 ('hallo', 715)
 ('dag', 531)
 ('hoi', 415)
@@ -126,7 +126,7 @@
 ('hooi', 4)
 ('goede morgen', 3)
 ('goedenmiddag', 1)
->>> boeken
+>>> boeken 0.04125303331127289
 ('hallo', 53)
 ('dag', 39)
 ('hoi', 23)
@@ -143,7 +143,7 @@
 ('yo', 2)
 ('hey', 1)
 ('de mazzel', 1)
->>> muziek
+>>> muziek 0.056851930420025454
 ('hallo', 54)
 ('dag', 17)
 ('hoi', 17)
@@ -157,7 +157,7 @@
 ('hi', 1)
 ('yo', 1)
 ('goede middag', 1)
->>> park
+>>> park 0.03197720436916258
 ('hallo', 62)
 ('dag', 43)
 ('hoi', 24)
@@ -178,7 +178,7 @@
 ('goede morgen', 1)
 ('hooi', 1)
 ('gegroet', 1)
->>> centraal
+>>> centraal 0.046095550122653955
 ('hallo', 2068)
 ('dag', 1961)
 ('CU', 1851)
@@ -201,7 +201,7 @@
 ('is er iemand', 43)
 ('goedenmiddag', 19)
 ('hooi', 14)
->>> tourist
+>>> tourist 0.13755458515283842
 ('hallo', 32)
 ('hoi', 9)
 ('dag', 7)
@@ -211,7 +211,7 @@
 ('doei', 2)
 ('de mazzel', 1)
 ('is er iemand', 1)
->>> overheidr
+>>> overheidr 0.03018867924528302
 ('dag', 63)
 ('hallo', 58)
 ('CU', 30)
@@ -230,7 +230,7 @@
 ('hooi', 1)
 ('yo', 1)
 ('gegroet', 1)
->>> 13
+>>> 13 0.06581532416502947
 ('hallo', 35)
 ('dag', 9)
 ('hoi', 7)
@@ -239,8 +239,8 @@
 ('iemand hier', 3)
 ('is er iemand', 2)
 ('de mazzel', 2)
->>> begraafplaats
->>> milieu
+>>> begraafplaats 0.0
+>>> milieu 0.049206349206349205
 ('hallo', 12)
 ('hoi', 6)
 ('CU', 3)
@@ -252,7 +252,7 @@
 ('goedenavond', 1)
 ('iemand hier', 1)
 ('is er iemand', 1)
->>> overheidl
+>>> overheidl 0.036837376460017966
 ('hallo', 15)
 ('dag', 8)
 ('hoi', 5)
@@ -265,7 +265,7 @@
 ('is er iemand', 1)
 ('iemand hier', 1)
 ('goedenavond', 1)
->>> landen
+>>> landen 0.04074784276126558
 ('hallo', 29)
 ('dag', 14)
 ('doei', 12)
@@ -278,7 +278,7 @@
 ('goede middag', 1)
 ('goedemiddag', 1)
 ('yo', 1)
->>> sport
+>>> sport 0.07307873644507308
 ('hallo', 65)
 ('dag', 24)
 ('hoi', 19)
@@ -292,7 +292,7 @@
 ('goedemorgen', 3)
 ('yo', 2)
 ('tot zo', 1)
->>> politiek
+>>> politiek 0.07107231920199501
 ('hallo', 25)
 ('hoi', 14)
 ('dag', 10)
@@ -303,8 +303,8 @@
 ('CU', 1)
 ('doei', 1)
 ('is er iemand', 1)
->>> haven
->>> film
+>>> haven 0.0
+>>> film 0.05833956619296934
 ('hallo', 83)
 ('hoi', 16)
 ('dag', 14)
@@ -321,7 +321,7 @@
 ('yo', 2)
 ('goedemiddag', 1)
 ('goede middag', 1)
->>> Metro
+>>> Metro 0.06096951524237881
 ('hallo', 191)
 ('hoi', 113)
 ('dag', 53)
@@ -341,7 +341,7 @@
 ('de mazzel', 1)
 ('goede morgen', 1)
 ('goede avond', 1)
->>> internet
+>>> internet 0.10667584308327598
 ('hallo', 81)
 ('hoi', 19)
 ('dag', 11)
@@ -358,7 +358,7 @@
 ('goedemiddag', 1)
 ('goedemorgen', 1)
 ('gegroet', 1)
->>> bve
+>>> bve 0.09108910891089109
 ('hallo', 43)
 ('hoi', 11)
 ('dag', 9)
@@ -372,10 +372,10 @@
 ('goedemorgen', 1)
 ('goede middag', 1)
 ('goedenmiddag', 1)
->>> europa
+>>> europa 0.18181818181818182
 ('hoi', 1)
 ('hallo', 1)
->>> digisteden
+>>> digisteden 0.19413919413919414
 ('hallo', 58)
 ('hoi', 9)
 ('iemand hier', 7)
@@ -390,7 +390,7 @@
 ('yo', 2)
 ('goede avond', 1)
 ('goedemiddag', 1)
->>> technologie
+>>> technologie 0.03882725832012678
 ('doei', 26)
 ('dag', 24)
 ('hallo', 17)
@@ -402,7 +402,7 @@
 ('goedemiddag', 1)
 ('goede avond', 1)
 ('goede middag', 1)
->>> werk
+>>> werk 0.12225705329153605
 ('hallo', 17)
 ('hoi', 5)
 ('hi', 5)
