@@ -15,13 +15,13 @@ for filename in onlyfiles:
             group_by_cafe[cafename] = []
         
         for line in file:
-            group_by_cafe[cafename].append(list(set(line.split())))
+            group_by_cafe[cafename].append(line.strip())
 
 def count_word_freq():
     for k,v in group_by_cafe.items():
         wordcount = collections.Counter()
         for vv in v:
-            wordcount.update(vv)
+            wordcount.update(list(set(vv.split())))
 
         print('>>> '+k)
         for w in wordcount.most_common()[:100]:
@@ -30,17 +30,23 @@ def count_word_freq():
 
 # count_word_freq()
 
-
+# hi dag yo
 stopwords = ["hallo", "hi", "hoi", "hey", "hai", "gegroet", "doei", "de mazzel", "hooi", "is er iemand", "iemand hier", "CU", "tot zo", "dag", "yo", "goedenavond", "goedemiddag", "goedenmiddag", "goedemorgen", "goede morgen", "goede avond", "goede middag"]
 
 def count_stopword_messages():
     for k,v in group_by_cafe.items():
         wordcount = collections.Counter()
         for vv in v:
-            wordcount.update(list(set(stopwords).intersection(vv)))
 
-        print('>>> '+k)
-        for w in wordcount.most_common()[:100]:
+            for stop in stopwords:
+                if stop in ["hi", "dag", "yo"]:
+                    if stop in vv.split():
+                        wordcount.update([stop])
+                elif stop in vv:
+                    wordcount.update([stop])
+
+        print('>>> '+k, sum(wordcount.values())/(len(v)+1) )
+        for w in wordcount.most_common()[:30]:
             print(w)
 
 
