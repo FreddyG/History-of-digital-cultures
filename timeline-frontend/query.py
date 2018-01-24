@@ -40,10 +40,8 @@ def get_events(distancefrom, distanceto):
         BIND(NOW() - ?date AS ?distance).
         #7700 dagen gelden tot 7750 dagen geleden
         FILTER(''' + str(distancefrom) + ''' <= ?distance && ?distance < ''' + str(distanceto) + '''.)
-    
     }
-    
-    LIMIT 4'''
+    LIMIT 5 '''
 
     wikidata_sparql_url = 'https://query.wikidata.org/bigdata/namespace/wdq/sparql'
     data = requests.get(wikidata_sparql_url, params={'query': query, 'format': 'json'}).json()
@@ -52,17 +50,29 @@ def get_events(distancefrom, distanceto):
     result = []
 
     for i in data["results"]["bindings"]:
+        print("Doing result: " + str(i["event"]["value"]))
         id = i["event"]["value"].rsplit('/', 1)[-1]
-        title = \
-            requests.get(wiki_data_entity_url + id, params={'format': 'json'}).json()["entities"][id]["sitelinks"][
-                "enwiki"][
-                "title"]
-        wikipedia.set_lang("nl")
+        try:
+            title = \
+                requests.get(wiki_data_entity_url + id, params={'format': 'json'}).json()["entities"][id]["sitelinks"][
+                    "nlwiki"][
+                    "title"]
+            wikipedia.set_lang("nl")
+        except:
+            print("Could not find Dutch wiki")
+            continue
         try:
             page = wikipedia.page(title)
         except:
-            break
-        page = page.content.encode("utf-8")
+            print("Cannot find wiki page")
+            continue
+
+        try:
+            page = page.content.encode("utf-8")
+        except:
+            print("Page: " + wikipedia.page(title) + " has no content, continue")
+            continue
+
         lines = page.splitlines()
         parsed_page = []
         for line in lines:
@@ -80,23 +90,33 @@ def convert_to_mysql(content):
         ps = "insert into wiki(wikipagename, content, date) VALUES ( \""
         ps = ps + elem[0] + "\", \""
         for st in elem[1].split(" "):
-            ps = ps + re.sub('[^A-Za-z0-9]+', '', st) + " "
+            ps = ps + re.sub('\"', '', st) + " "
         ps = ps.strip() + "\" , "
         ps = ps + "\"" + elem[2]
         ps = ps + "\");"
-        print(ps)
         insert_list.append(ps)
 
     return insert_list
 
 
 def main():
-    events = get_events(7750, 10000)  # between days
-    insert_list = convert_to_mysql(events) # get list of insert queries
+    events = get_events(7700, 10000)  # between days
+    print("Processed: " + str(len(events)) + " events")
 
+    insert_list = convert_to_mysql(events) # get list of insert queries
     create_insert_into = open("insertwikidata.sql", "w")
+
+    i = 1
     for wiki in insert_list:
-        create_insert_into.write("%s" % wiki)
+        message = "Inserted wiki " + str(i)
+        try:
+            create_insert_into.write("%s" % wiki)
+        except:
+            toUTF = wiki.encode("utf-8")
+            create_insert_into.write("%s" % toUTF)
+        finally:
+            i += 1
+            print(message)
     create_insert_into.close()
 
 
